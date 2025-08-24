@@ -19,13 +19,19 @@ final readonly class UserService
 
     public function defaultData(): array
     {
-        $name = $this->faker->firstName() . ' ' . $this->faker->lastName();
-        $domain = uniqid() . $this->faker->word() . '.' . $this->faker->word();
+        $sex = $this->faker->boolean();
+        $bio = $this->faker->text();
+
+        $name = $this->faker->firstName($sex ? 'male' : 'female') . ' ' . $this->faker->lastName($sex ? 'male' : 'female');
+        $domain = uniqid() . $this->faker->word() . '.com';
         $email = str_replace(' ', '_', $name) . '@' . $domain;
         return [
             'email' => $email,
             'name' => $name,
-            'age' => random_int(10, 60)
+            'age' => random_int(10, 60),
+            'height' => random_int(160, 200),
+            'sex' => $sex,
+            'bio' => $bio,
         ];
     }
 
@@ -39,11 +45,11 @@ final readonly class UserService
         $user = new $type();
         $user->setEmail($dd['email'])
             ->setName($dd['name'])
-            ->setAttributes([
-                'email' => $dd['email'],
-                'name' => $dd['name'],
-                'age' => $dd['age']
-            ]);
+            ->setAge($dd['age'])
+            ->setHeight($dd['height'])
+            ->setSex($dd['sex'])
+            ->setBio($dd['bio'])
+            ->setAttributes($dd);
         return $user;
     }
 }
