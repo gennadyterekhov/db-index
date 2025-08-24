@@ -5,7 +5,7 @@ I want to create several tables with different indexes and compare read/write sp
 https://habr.com/ru/companies/otus/articles/747882/
 
 # how to run
-docker compose up
+    docker compose up  
 analysis will be available on localhost:81
 
 # how to add table to comparison
