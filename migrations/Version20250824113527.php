@@ -24,6 +24,10 @@ final class Version20250824113527 extends AbstractMigration
                                 id serial primary key,
                                 email text not null default \'\' ,
                                 name text not null default \'\',
+                                age int not null default 18,
+                                height int not null default 180,
+                                sex boolean not null default true, -- true=M false=F
+                                bio text not null default \'\',
                                 password text not null default \'\', -- we will never query by this field
                                 attributes json not null default \'{}\',
                                 created_at timestamp with time zone not null default now(),
