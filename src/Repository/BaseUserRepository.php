@@ -16,16 +16,6 @@ class BaseUserRepository extends ServiceEntityRepository
         parent::__construct($registry, BaseUser::class);
     }
 
-    public function findByEmail(): array
-    {
-        $value = 'name@name.ru';
-        return static::createQueryBuilder('u')
-            ->andWhere('u.email = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getResult();
-    }
-
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */
