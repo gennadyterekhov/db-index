@@ -20,7 +20,7 @@ final class Version20250824114505 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('create table user_email_btree (
+        $this->addSql('create table users_email_btree (
                                 id serial primary key,
                                 email text not null default \'\' ,
                                 name text not null default \'\',
@@ -33,12 +33,12 @@ final class Version20250824114505 extends AbstractMigration
         ');
 
         //CREATE INDEX ix_example_btree ON example_table (column_name);
-        $this->addSql('CREATE INDEX ix_user_email_btree ON user_email_btree (email); ');
+        $this->addSql('CREATE INDEX ix_users_email_btree ON users_email_btree (email); ');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('drop table user_email_btree');
+        $this->addSql('drop table users_email_btree');
     }
 }

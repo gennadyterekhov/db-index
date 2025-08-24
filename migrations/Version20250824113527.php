@@ -20,7 +20,7 @@ final class Version20250824113527 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('create table user (
+        $this->addSql('create table users (
                                 id serial primary key,
                                 email text not null default \'\' ,
                                 name text not null default \'\',
@@ -38,6 +38,6 @@ final class Version20250824113527 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('drop table user');
+        $this->addSql('drop table users');
     }
 }

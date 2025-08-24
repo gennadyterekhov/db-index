@@ -10,11 +10,12 @@ WORKDIR /var/www/app
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y git
+    apt-get install -y git libpq-dev postgresql-client
+RUN docker-php-ext-install pdo pdo_pgsql
+
 RUN php /var/www/app/docker/app/composer-installer
 RUN mv composer.phar /usr/local/bin/composer
 RUN composer install
-
 # Изменение UID и GID пользователя user
 ARG UID=1001
 ARG GID=1001
