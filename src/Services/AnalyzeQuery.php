@@ -41,6 +41,6 @@ final readonly class AnalyzeQuery
         $explain = $connection->executeQuery('EXPLAIN ANALYZE ' . $lastQuery['sql'], $lastQuery['params'])
             ->fetchAllAssociative();
 
-        return new QueryAnalysisResult($method, $lastQuery['sql'], $explain, $data);
+        return new QueryAnalysisResult($method, $lastQuery['sql'], array_column($explain, 'QUERY PLAN'), $data);
     }
 }
