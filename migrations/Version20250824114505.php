@@ -32,7 +32,10 @@ final class Version20250824114505 extends AbstractMigration
                             )
         ');
 
-        //CREATE INDEX ix_example_btree ON example_table (column_name);
+        //
+        //B-tree (сбалансированное дерево) — это самый распространенный тип индекса в PostgreSQL.
+        // Он поддерживает все стандартные операции сравнения (>, <, >=, <=, =, <>) и может использоваться с большинством типов данных.
+        // B-tree индексы могут быть использованы для сортировки, ограничений уникальности и поиска по диапазону значений.
         $this->addSql('CREATE INDEX ix_users_email_btree ON users_email_btree (email); ');
     }
 
