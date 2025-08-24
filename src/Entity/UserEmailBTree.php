@@ -29,11 +29,11 @@ class UserEmailBTree extends BaseUser
     protected array $attributes = [];
 
     #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, options: ['default' => new \DateTime()])]
-    protected ?\DateTime $created_at = null;
+    protected ?\DateTime $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, options: ['default' => new \DateTime()])]
-    protected ?\DateTime $updated_at = null;
+    protected ?\DateTime $updatedAt = null;
 
     #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-    protected ?\DateTime $deleted_at = null;
+    protected ?\DateTime $deletedAt = null;
 }
