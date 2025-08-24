@@ -3,7 +3,7 @@ services:
         container_name: db
         image: mirror.gcr.io/postgres:${POSTGRES_VERSION:-16}-alpine
         volumes:
-            - postgres_data:/var/lib/postgresql/data:rw
+            - db_index_postgres_data:/var/lib/postgresql/data:rw
         environment:
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
             POSTGRES_USER: ${POSTGRES_USER:-postgres}
@@ -15,7 +15,7 @@ services:
         container_name: db_test
         image: mirror.gcr.io/postgres:${POSTGRES_VERSION:-16}-alpine
         volumes:
-            - postgres_test_data:/var/lib/postgresql/data:rw
+            - db_index_postgres_test_data:/var/lib/postgresql/data:rw
         environment:
             POSTGRES_PASSWORD: test
             POSTGRES_USER: test
@@ -58,5 +58,5 @@ services:
 
 
 volumes:
-    postgres_data:
-    postgres_test_data:
+    db_index_postgres_data:
+    db_index_postgres_test_data:
