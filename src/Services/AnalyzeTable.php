@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Dto\TableAnalysisResult;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class AnalyzeTable
@@ -14,7 +15,7 @@ final readonly class AnalyzeTable
         private AnalyzeQuery $analyzeQuery,
     ) {}
 
-    public function getAnalysisAndData(EntityManagerInterface $repo, string $class): TableAnalysisResult
+    public function getAnalysisAndData(ServiceEntityRepository $repo, string $class): TableAnalysisResult
     {
         $repoMethods = [
             'findAll',
