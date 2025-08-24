@@ -16,6 +16,17 @@ class BaseUserRepository extends ServiceEntityRepository
         parent::__construct($registry, BaseUser::class);
     }
 
+    public function findByExampleField($value): array
+    {
+        return static::createQueryBuilder('u')
+            ->andWhere('u.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('u.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */
