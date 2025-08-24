@@ -10,10 +10,22 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class AnalyzeQuery
 {
-    public function getAnalysisAndData(EntityManagerInterface $entityManager, $func): QueryAnalysisResult
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+
+    ) {}
+
+    public function getAnalysisAndData(string $class, string $method): QueryAnalysisResult
+    {
+        return $this->getAnalysisAndDataWithCustomFunc(
+            fn() => $this->entityManager->getRepository($class)->$method(),
+        );
+    }
+
+    public function getAnalysisAndDataWithCustomFunc($func): QueryAnalysisResult
     {
         // Enable SQL logging
-        $connection = $entityManager->getConnection();
+        $connection = $this->entityManager->getConnection();
         $connection->getConfiguration()->setSQLLogger(new DebugStack());
 
         // Execute your query
