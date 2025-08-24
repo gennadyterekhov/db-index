@@ -19,15 +19,20 @@
         padding: 0.5rem;
         background-color: #dcdcdc;
       }
+
+      .copy-button {
+        margin: 0 0 1rem 0;
+
+      }
     </style>
 </head>
 <body>
 
 <h1>Comparison</h1>
 
-<div>
+{# does not work. need to investigate how to do normally #}
+{#<button onclick="copyJson()" class="copy-button">copy in json</button>#}
 
-</div>
 {% for a in analysis %}
     <div class="table-card">
         <b>{{ a.class }}</b>
@@ -46,4 +51,11 @@
     </div>
 {% endfor %}
 <br>
+<script>
+  function copyJson() {
+    let rawJson = '{{ analysisJson }}';
+
+    navigator.clipboard.writeText(rawJson)
+  }
+</script>
 </body>
