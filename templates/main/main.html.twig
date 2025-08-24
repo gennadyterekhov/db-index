@@ -1,8 +1,35 @@
-<head></head>
+<head>
+    <style>
+        .analysis-card{
+          border-radius: 5px;
+          background-color: #dcdcdc;
+        }
+    </style>
+</head>
 <body>
 
 <h1>title</h1>
-<pre>{{ analysis }}</pre>
+{#<pre>{{ analysis }}</pre>#}
+
+{% for a in analysis  %}
+    <div class="analysis-card">
+        <b>{{ a.class }}</b>
+        {% for q in a.queries  %}
+            <div class="analysis-card">
+{#                {{ q | json_encode }}#}
+                <div><b>{{ q.method }}</b></div>
+                <div>{{ q.sql }}</div>
+                {% for analysisLine in q.analysis  %}
+                    <div>{{ analysisLine }}</div>
+                {% endfor  %}
+{#                <div>{{ q.analysis |json_encode }}</div>#}
+
+            </div>
+            <br>
+        {% endfor  %}
+
+    </div>
+    <br>
+{% endfor  %}
 <br>
-<pre>{{ users }}</pre>
 </body>
