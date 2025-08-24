@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:create-users')]
 final class CreateUsersCommand extends Command
 {
-    public const int NUMBER_OF_USERS = 100000;
+    public const int NUMBER_OF_USERS = 1000;
 
     private Generator $faker;
 
@@ -39,8 +39,9 @@ final class CreateUsersCommand extends Command
     private function createUsers(): void
     {
         for ($i = 0; $i < self::NUMBER_OF_USERS; $i++) {
+            $dd = $this->userService->defaultData();
             foreach (Analyze::CLASSES as $class) {
-                $this->entityManager->persist($this->userService->create($class));
+                $this->entityManager->persist($this->userService->createWData($class, $dd));
             }
         }
 
