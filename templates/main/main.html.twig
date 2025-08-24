@@ -1,35 +1,48 @@
 <head>
     <style>
-        .analysis-card{
-          border-radius: 5px;
-          background-color: #dcdcdc;
-        }
+      .table-card {
+        border-radius: 10px;
+        background-color: #96c1cc;
+        padding: 1rem;
+        margin: 0 0 1rem 0;
+      }
+
+      .query-card {
+        border-radius: 10px;
+        background-color: #89b1bc;
+        padding: 1rem;
+        margin: 0 0 1rem 0;
+      }
+
+      .analysis-card {
+        border-radius: 5px;
+        background-color: #dcdcdc;
+      }
     </style>
 </head>
 <body>
 
-<h1>title</h1>
-{#<pre>{{ analysis }}</pre>#}
+<h1>Comparison</h1>
 
-{% for a in analysis  %}
-    <div class="analysis-card">
+<div>
+
+</div>
+{% for a in analysis %}
+    <div class="table-card">
         <b>{{ a.class }}</b>
-        {% for q in a.queries  %}
-            <div class="analysis-card">
-{#                {{ q | json_encode }}#}
+
+        {% for q in a.queries %}
+            <div class="query-card">
                 <div><b>{{ q.method }}</b></div>
                 <div>{{ q.sql }}</div>
-                {% for analysisLine in q.analysis  %}
-                    <div>{{ analysisLine }}</div>
-                {% endfor  %}
-{#                <div>{{ q.analysis |json_encode }}</div>#}
-
+                <div class="analysis-card">
+                    {% for analysisLine in q.analysis %}
+                        <div>{{ analysisLine }}</div>
+                    {% endfor %}
+                </div>
             </div>
-            <br>
-        {% endfor  %}
-
+        {% endfor %}
     </div>
-    <br>
-{% endfor  %}
+{% endfor %}
 <br>
 </body>
