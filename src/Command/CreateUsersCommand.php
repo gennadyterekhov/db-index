@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Entity\User;
-use App\Entity\UserEmailBTree;
+use App\Services\Analyze;
 use App\Services\UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
@@ -18,11 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:create-users')]
 final class CreateUsersCommand extends Command
 {
-    public const int NUMBER_OF_USERS = 1;
-    public const array CLASSES = [
-        User::class,
-        UserEmailBTree::class,
-    ];
+    public const int NUMBER_OF_USERS = 100000;
 
     private Generator $faker;
 
@@ -44,7 +39,7 @@ final class CreateUsersCommand extends Command
     private function createUsers(): void
     {
         for ($i = 0; $i < self::NUMBER_OF_USERS; $i++) {
-            foreach (self::CLASSES as $class) {
+            foreach (Analyze::CLASSES as $class) {
                 $this->entityManager->persist($this->userService->create($class));
             }
         }
