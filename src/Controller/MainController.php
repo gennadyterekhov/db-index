@@ -1,10 +1,16 @@
 <?php
-// src/Controller/LuckyController.php
+
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserEmailBTreeRepository;
 use App\Repository\UserRepository;
+use App\Services\Analyze;
+use App\Services\AnalyzeQuery;
+use App\Services\AnalyzeTable;
+use Doctrine\DBAL\Logging\DebugStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,20 +20,20 @@ class MainController extends AbstractController
     public function __construct(
         private UserRepository $userRepository,
         private UserEmailBTreeRepository $userEmailBTreeRepository,
+        private AnalyzeQuery $analyzeQuery,
+        private AnalyzeTable $analyzeTable,
+        private Analyze $analyze,
     ) {}
 
     #[Route('/')]
     public function main(): Response
     {
-        $number = random_int(0, 100);
+        $analysis = $this->analyze->getAnalysisAndData();
 
-        $allUsers = $this->userRepository->findAll();
-        $allUsersEmailBtree = $this->userEmailBTreeRepository->findAll();
-        $allUsers = array_map(static fn(User $u) => $u->__toArray(), $allUsers);
-
-        $dt = json_encode($allUsers);
-        return new Response(
-            '<html><body>Lucky number: ' . $number . " <pre>$dt</pre></body></html>"
+        return $this->render('main/main.html.twig',
+            [
+                'analysis' => $analysis,
+            ]
         );
     }
 }
