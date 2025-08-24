@@ -32,7 +32,8 @@ class MainController extends AbstractController
 
         return $this->render('main/main.html.twig',
             [
-                'analysis' => $analysis,
+                'analysis' => json_encode($analysis),
+                'users' => '',
             ]
         );
     }

@@ -10,7 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<User>
  */
-class UserEmailBTreeRepository extends BaseUserRepository
+class UserEmailBTreeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
