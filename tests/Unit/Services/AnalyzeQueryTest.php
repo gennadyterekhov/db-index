@@ -4,12 +4,25 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Services;
 
+use App\Entity\User;
+use App\Services\AnalyzeQuery;
 use App\Tests\CustomKernelTestCase;
 
 final class AnalyzeQueryTest extends CustomKernelTestCase
 {
-    public function testCanRunTest()
+    private AnalyzeQuery $analyzeQuery;
+
+    public function setUp(): void
     {
+        parent::setUp();
+        $this->analyzeQuery = $this->getContainer()->get(AnalyzeQuery::class);
+    }
+
+    public function testCanAnalyzeFindAll()
+    {
+        $res = $this->analyzeQuery->getAnalysisAndData(User::class, 'findAll');
+
+        dump($res->analysis);
         self::assertEquals(1, 1);
     }
 }
