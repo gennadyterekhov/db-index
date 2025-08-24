@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Entity\User;
+use App\Entity\UserEmailBTree;
+use App\Services\UserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
 use Faker\Generator;
@@ -16,18 +18,25 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:create-users')]
 final class CreateUsersCommand extends Command
 {
-    public const int NUMBER_OF_USERS = 1000;
+    public const int NUMBER_OF_USERS = 1;
+    public const array CLASSES = [
+        User::class,
+        UserEmailBTree::class,
+    ];
+
     private Generator $faker;
 
     public function __construct(
-        private EntityManagerInterface $entityManager,
-    ) {
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserService $userService,
+    )
+    {
         parent::__construct();
+        $this->faker = Factory::create();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->faker = Factory::create();
         $this->createUsers();
         return Command::SUCCESS;
     }
@@ -35,25 +44,11 @@ final class CreateUsersCommand extends Command
     private function createUsers(): void
     {
         for ($i = 0; $i < self::NUMBER_OF_USERS; $i++) {
-            $user = $this->create1User();
-            $this->entityManager->persist($user);
+            foreach (self::CLASSES as $class) {
+                $this->entityManager->persist($this->userService->create($class));
+            }
         }
 
         $this->entityManager->flush();
-    }
-
-    private function create1User(): User
-    {
-        $name = $this->faker->name();
-        $email = str_replace(' ', '_', $name) . '@example.com';
-        $user = new User();
-        $user->setEmail($email)
-            ->setName($name)
-            ->setAttributes([
-                'email' => $email,
-                'name' => $name,
-                'age' => random_int(10, 60)
-            ]);
-        return $user;
     }
 }
