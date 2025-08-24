@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
-
 class BaseUser
 {
     protected ?int $id = null;
