@@ -18,16 +18,16 @@ class BaseUser
 
     protected array $attributes = [];
 
-    protected ?\DateTime $created_at = null;
+    protected ?\DateTime $createdAt = null;
 
-    protected ?\DateTime $updated_at = null;
+    protected ?\DateTime $updatedAt = null;
 
-    protected ?\DateTime $deleted_at = null;
+    protected ?\DateTime $deletedAt = null;
 
     public function __construct()
     {
-        $this->created_at = new \DateTime();
-        $this->updated_at = new \DateTime();
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -85,37 +85,52 @@ class BaseUser
 
     public function getCreatedAt(): ?\DateTime
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $created_at): static
+    public function setCreatedAt(\DateTime $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTime
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updated_at): static
+    public function setUpdatedAt(\DateTime $updatedAt): static
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     public function getDeletedAt(): ?\DateTime
     {
-        return $this->deleted_at;
+        return $this->deletedAt;
     }
 
-    public function setDeletedAt(?\DateTime $deleted_at): static
+    public function setDeletedAt(?\DateTime $deletedAt): static
     {
-        $this->deleted_at = $deleted_at;
+        $this->deletedAt = $deletedAt;
 
         return $this;
+    }
+
+    public function __toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'email' => $this->email,
+            'name' => $this->name,
+            'createdAt' => $this->createdAt,
+        ];
+    }
+
+    public function __toString(): string
+    {
+        return json_encode($this->__toArray());
     }
 }
