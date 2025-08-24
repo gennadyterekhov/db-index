@@ -168,6 +168,10 @@ class BaseUser
             'id' => $this->id,
             'email' => $this->email,
             'name' => $this->name,
+            'age' => $this->age,
+            'height' => $this->height,
+            'sex' => $this->sex,
+            'bio' => $this->bio,
             'createdAt' => $this->createdAt,
         ];
     }
