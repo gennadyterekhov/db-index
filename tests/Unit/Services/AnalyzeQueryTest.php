@@ -25,4 +25,12 @@ final class AnalyzeQueryTest extends CustomKernelTestCase
         dump($res->analysis);
         self::assertEquals(1, 1);
     }
+
+    public function testCanAnalyzeFindByEmail()
+    {
+        $res = $this->analyzeQuery->getAnalysisAndData(User::class, 'findByEmail');
+
+        dump($res->analysis);
+        self::assertEquals(1, 1);
+    }
 }
