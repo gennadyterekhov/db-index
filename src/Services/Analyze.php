@@ -18,10 +18,12 @@ final readonly class Analyze
         private AnalyzeTable $analyzeTable,
     ) {}
 
-    public function getAnalysisAndData(string $class, array $methods = []): array
+    public function getAnalysisAndData(array $classes = []): array
     {
+        $classes = (count($classes) === 0) ? self::CLASSES : $classes;
+
         $tables = [];
-        foreach (Analyze::CLASSES as $class) {
+        foreach ($classes as $class) {
             $tables[$class] = $this->analyzeTable->getAnalysisAndData($class);
         }
         return $tables;
