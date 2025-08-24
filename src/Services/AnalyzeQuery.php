@@ -19,10 +19,11 @@ final readonly class AnalyzeQuery
     {
         return $this->getAnalysisAndDataWithCustomFunc(
             fn() => $this->entityManager->getRepository($class)->$method(),
+            $method,
         );
     }
 
-    public function getAnalysisAndDataWithCustomFunc($func): QueryAnalysisResult
+    public function getAnalysisAndDataWithCustomFunc($func, $method = ''): QueryAnalysisResult
     {
         // Enable SQL logging
         $connection = $this->entityManager->getConnection();
@@ -40,6 +41,6 @@ final readonly class AnalyzeQuery
         $explain = $connection->executeQuery('EXPLAIN ANALYZE ' . $lastQuery['sql'], $lastQuery['params'])
             ->fetchAllAssociative();
 
-        return new QueryAnalysisResult($lastQuery['sql'], $explain, $data);
+        return new QueryAnalysisResult($method, $lastQuery['sql'], $explain, $data);
     }
 }
