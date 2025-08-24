@@ -16,22 +16,22 @@ class UserEmailBTree extends BaseUser
     #[ORM\Column]
     protected ?int $id = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    protected ?string $email = null;
+    #[ORM\Column(type: Types::TEXT, options: ['default' => ''])]
+    protected ?string $email = '';
 
-    #[ORM\Column(type: Types::TEXT)]
-    protected ?string $name = null;
+    #[ORM\Column(type: Types::TEXT, options: ['default' => ''])]
+    protected ?string $name = '';
 
-    #[ORM\Column(type: Types::TEXT)]
-    protected ?string $password = null;
+    #[ORM\Column(type: Types::TEXT, options: ['default' => ''])]
+    protected ?string $password = '';
 
     #[ORM\Column]
     protected array $attributes = [];
 
-    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, options: ['default' => new \DateTime()])]
     protected ?\DateTime $created_at = null;
 
-    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, options: ['default' => new \DateTime()])]
     protected ?\DateTime $updated_at = null;
 
     #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, nullable: true)]
