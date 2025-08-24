@@ -24,6 +24,12 @@ class BaseUser
 
     protected ?\DateTime $deleted_at = null;
 
+    public function __construct()
+    {
+        $this->created_at = new \DateTime();
+        $this->updated_at = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
