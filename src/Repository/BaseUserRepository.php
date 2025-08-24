@@ -18,7 +18,7 @@ class BaseUserRepository extends ServiceEntityRepository
 
     public function findByEmail(): array
     {
-        $value = '';
+        $value = 'name@name.ru';
         return static::createQueryBuilder('u')
             ->andWhere('u.email = :val')
             ->setParameter('val', $value)
