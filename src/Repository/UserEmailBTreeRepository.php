@@ -17,6 +17,8 @@ class UserEmailBTreeRepository extends BaseUserRepository
         parent::__construct($registry, UserEmailBTree::class);
     }
 
+    use BaseRepo;
+
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */
