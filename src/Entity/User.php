@@ -21,6 +21,18 @@ class User extends BaseUser
     #[ORM\Column(type: Types::TEXT, options: ['default' => ''])]
     protected ?string $name = '';
 
+    #[ORM\Column(type: Types::INTEGER, options: ['default' => 18])]
+    protected ?int $age = 18;
+
+    #[ORM\Column(type: Types::INTEGER, options: ['default' => 180])]
+    protected ?int $height = 180;
+
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
+    protected ?bool $sex = true;
+
+    #[ORM\Column(type: Types::TEXT, options: ['default' => ''])]
+    protected ?string $bio = '';
+
     #[ORM\Column(type: Types::TEXT, options: ['default' => ''])]
     protected ?string $password = '';
 
