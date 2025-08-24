@@ -5,26 +5,23 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Dto\TableAnalysisResult;
-use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class AnalyzeTable
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
         private AnalyzeQuery $analyzeQuery,
     ) {}
 
-    public function getAnalysisAndData(string $class): TableAnalysisResult
+    public function getAnalysisAndData(string $class, array $methods = []): TableAnalysisResult
     {
-        $repoMethods = [
-            'findAll',
-        ];
+        $methods = (count($methods) === 0)
+            ? [
+                'findAll',
+            ]
+            : $methods;
         $analyses = [];
-        foreach ($repoMethods as $method) {
-            $analyses[] = $this->analyzeQuery->getAnalysisAndData(
-                $this->entityManager,
-                fn() => $this->entityManager->getRepository($class)->$method(),
-            );
+        foreach ($methods as $method) {
+            $analyses[] = $this->analyzeQuery->getAnalysisAndData($class, $method);
         }
 
         return new TableAnalysisResult($analyses, $class);
