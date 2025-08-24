@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:create-users')]
 final class CreateUsersCommand extends Command
 {
-    public const int NUMBER_OF_USERS = 1000;
+    public const int NUMBER_OF_USERS = 10000;
 
     private Generator $faker;
 

@@ -6,6 +6,10 @@ https://habr.com/ru/companies/otus/articles/747882/
 
 # how to run
     docker compose up  
+    docker compose exec php bash
+    bin/console app:create-users
+
+this will create 10000 users in every table  
 analysis will be available on localhost:81
 
 # how to add table to comparison
