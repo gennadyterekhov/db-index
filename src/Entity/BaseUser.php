@@ -9,11 +9,12 @@ class BaseUser
     protected ?int $id = null;
 
     protected ?string $email = null;
-
     protected ?string $name = null;
-
+    protected ?int $age = null;
+    protected ?int $height = null;
+    protected ?bool $sex = null;
+    protected ?string $bio = null;
     protected ?string $password = null;
-
     protected array $attributes = [];
 
     protected ?\DateTime $createdAt = null;
@@ -54,6 +55,50 @@ class BaseUser
     {
         $this->name = $name;
 
+        return $this;
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(?int $age): static
+    {
+        $this->age = $age;
+        return $this;
+    }
+
+    public function getHeight(): ?int
+    {
+        return $this->height;
+    }
+
+    public function setHeight(?int $height): static
+    {
+        $this->height = $height;
+        return $this;
+    }
+
+    public function getSex(): ?bool
+    {
+        return $this->sex;
+    }
+
+    public function setSex(?bool $sex): static
+    {
+        $this->sex = $sex;
+        return $this;
+    }
+
+    public function getBio(): ?string
+    {
+        return $this->bio;
+    }
+
+    public function setBio(?string $bio): static
+    {
+        $this->bio = $bio;
         return $this;
     }
 
