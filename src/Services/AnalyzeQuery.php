@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Dto\QueryAnalysisResult;
 use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class AnalyzeQuery
 {
-    public function getAnalysisAndData(EntityManagerInterface $entityManager, $func): array
+    public function getAnalysisAndData(EntityManagerInterface $entityManager, $func): QueryAnalysisResult
     {
         // Enable SQL logging
         $connection = $entityManager->getConnection();
@@ -27,9 +28,6 @@ final readonly class AnalyzeQuery
         $explain = $connection->executeQuery('EXPLAIN ANALYZE ' . $lastQuery['sql'], $lastQuery['params'])
             ->fetchAllAssociative();
 
-        return [
-            'data' => $data,
-            'analysis' => $explain,
-        ];
+        return new QueryAnalysisResult($lastQuery['sql'], $explain, $data);
     }
 }
