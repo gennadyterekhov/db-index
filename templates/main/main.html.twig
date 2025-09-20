@@ -33,14 +33,21 @@
 {# does not work. need to investigate how to do normally #}
 {#<button onclick="copyJson()" class="copy-button">copy in json</button>#}
 
+
+<div>
+    {{ error }}
+</div>
+
 {% for a in analysis %}
     <div class="table-card">
         <b>{{ a.class }}</b>
 
         {% for q in a.queries %}
             <div class="query-card">
-                <div><b>{{ q.method }}</b></div>
-                <div>{{ q.sql }}</div>
+{#                <div><b>{{ q.method }}</b></div>#}
+                <div>{{ q.sql[0:50] }} ...</div>
+{#                {% ifq.sql|length > 30 %}#}
+{#                {% endif %}#}
                 <div class="analysis-card">
                     {% for analysisLine in q.analysis %}
                         <div>{{ analysisLine }}</div>

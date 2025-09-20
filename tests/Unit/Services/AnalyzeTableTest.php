@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Services;
 
 use App\Entity\User;
+use App\Entity\UserEmailBTree;
+use App\Entity\UserIndexEveryCol;
 use App\Services\AnalyzeTable;
 use App\Tests\CustomKernelTestCase;
 
@@ -18,11 +20,21 @@ final class AnalyzeTableTest extends CustomKernelTestCase
         $this->analyzeTable = $this->getContainer()->get(AnalyzeTable::class);
     }
 
-    public function testCanAnalyzeUsers()
+    public function testCanAnalyzeUsersTable()
     {
+        self::assertCount(0, $this->entityManager->getRepository(User::class)->findAll());
         $res = $this->analyzeTable->getAnalysisAndData(User::class);
+        dump($res);
+        self::assertNotEmpty($res->queries);
 
-        dump($res->queries);
-        self::assertEquals(1, 1);
+        self::assertCount(0, $this->entityManager->getRepository(UserEmailBTree::class)->findAll());
+        $res = $this->analyzeTable->getAnalysisAndData(UserEmailBTree::class);
+        dump($res);
+        self::assertNotEmpty($res->queries);
+
+        self::assertCount(0, $this->entityManager->getRepository(UserIndexEveryCol::class)->findAll());
+        $res = $this->analyzeTable->getAnalysisAndData(UserIndexEveryCol::class);
+        dump($res);
+        self::assertNotEmpty($res->queries);
     }
 }

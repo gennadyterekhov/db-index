@@ -28,9 +28,6 @@ services:
         build:
             context: .
             dockerfile: docker/app/Dockerfile
-            args:
-                UID: ${UID}
-                GID: ${GID}
         command: [ 'php-fpm', '--nodaemonize' ]
         depends_on:
             - db
@@ -40,8 +37,6 @@ services:
         volumes:
             - ./:/var/www/app
         environment:
-            UID: ${UID:-1000}
-            GID: ${GID:-1001}
             CORS_ALLOW_ORIGIN: '*'
 
     back-nginx:

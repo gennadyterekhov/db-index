@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 class UserEmailBTree extends BaseUser
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
     #[ORM\Column]
     protected ?int $id = null;
 
@@ -40,12 +40,12 @@ class UserEmailBTree extends BaseUser
     #[ORM\Column]
     protected array $attributes = [];
 
-    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, options: ['default' => new \DateTime()])]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => new \DateTime()])]
     protected ?\DateTime $createdAt = null;
 
-    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, options: ['default' => new \DateTime()])]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ['default' => new \DateTime()])]
     protected ?\DateTime $updatedAt = null;
 
-    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     protected ?\DateTime $deletedAt = null;
 }
