@@ -6,6 +6,7 @@ namespace App\Tests\Unit\Services;
 
 use App\Entity\User;
 use App\Services\AnalyzeQuery;
+use App\Services\UserService;
 use App\Tests\CustomKernelTestCase;
 
 final class AnalyzeQueryTest extends CustomKernelTestCase
@@ -22,7 +23,9 @@ final class AnalyzeQueryTest extends CustomKernelTestCase
     {
         $res = $this->analyzeQuery->getAnalysisAndData(User::class, 'findAll');
 
-        dump($res->analysis);
+//        dump($res);
+        self::assertNotEmpty($res);
+
         self::assertEquals(1, 1);
     }
 
@@ -30,7 +33,16 @@ final class AnalyzeQueryTest extends CustomKernelTestCase
     {
         $res = $this->analyzeQuery->getAnalysisAndData(User::class, 'findByEmail');
 
-        dump($res->analysis);
+//        dump($res);
+        self::assertNotEmpty($res);
+        self::assertEquals(1, 1);
+    }
+
+    public function testCanAnalyzeInsertManyUsers()
+    {
+        $res = $this->analyzeQuery->getAnalysisAndData(User::class, 'insertManyUsers', false, UserService::class);
+
+//        dump($res);
         self::assertEquals(1, 1);
     }
 }

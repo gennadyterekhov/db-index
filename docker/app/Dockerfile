@@ -19,10 +19,11 @@ RUN composer install
 # Изменение UID и GID пользователя user
 ARG UID=1001
 ARG GID=1001
-RUN #usermod --uid ${UID} user && groupmod --gid $GID user
+RUN usermod --uid ${UID} user && groupmod --gid $GID user
 
 # Установка пользователя
 USER user
+RUN git config --global --add safe.directory /var/www/app
 
 # Указание команды для запуска
 

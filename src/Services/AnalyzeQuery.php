@@ -5,42 +5,44 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Dto\QueryAnalysisResult;
-use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class AnalyzeQuery
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-
+        private UserService $userService,
+        private QueryKeeper $queryKeeper,
     ) {}
 
-    public function getAnalysisAndData(string $class, string $method): QueryAnalysisResult
+    /**
+     * @return QueryAnalysisResult[]
+     */
+    public function getAnalysisAndData(string $class, string $method, bool $isEntity = true, string $serviceClass = ''): array
     {
-        return $this->getAnalysisAndDataWithCustomFunc(
-            fn() => $this->entityManager->getRepository($class)->$method(),
-            $method,
-        );
+        if ($isEntity) {
+            return $this->getAnalysisAndDataWithCustomFunc(
+                fn() => $this->entityManager->getRepository($class)->$method(),
+                $method,
+            );
+        } else {
+            return $this->getAnalysisAndDataWithCustomFunc(
+                fn() => $this->userService->$method($class),
+                $method,
+            );
+        }
     }
 
-    public function getAnalysisAndDataWithCustomFunc($func, $method = ''): QueryAnalysisResult
+    /**
+     * @return QueryAnalysisResult[]
+     */
+    private function getAnalysisAndDataWithCustomFunc($func, $method = ''): array
     {
-        // Enable SQL logging
-        $connection = $this->entityManager->getConnection();
-        $connection->getConfiguration()->setSQLLogger(new DebugStack());
-
-        // Execute your query
+        $this->queryKeeper->clearQueries();
+        $this->queryKeeper->enabled = true;
         $data = $func();
-//        $data = $this->userRepository->findAll();
+        $this->queryKeeper->enabled = false;
 
-        // Get the executed queries and explain them
-        $logger = $connection->getConfiguration()->getSQLLogger();
-        $lastQuery = end($logger->queries);
-
-        // Run EXPLAIN ANALYZE on the last query
-        $explain = $connection->executeQuery('EXPLAIN ANALYZE ' . $lastQuery['sql'], $lastQuery['params'])
-            ->fetchAllAssociative();
-
-        return new QueryAnalysisResult($method, $lastQuery['sql'], array_column($explain, 'QUERY PLAN'), $data);
+        return $this->queryKeeper->getQueries();
     }
 }

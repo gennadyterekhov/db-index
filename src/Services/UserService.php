@@ -4,52 +4,46 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Entity\User;
-use Faker\Factory;
-use Faker\Generator;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class UserService
 {
-    private Generator $faker;
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private Tables $tables,
+        private CreateUser $createUser,
+    ) {}
 
-    public function __construct()
+    /**
+     * @throws Exception
+     */
+    public function insertManyUsers(string $entityClass, int $quantity = 10000)
     {
-        $this->faker = Factory::create();
+        return $this->createUser->insertManyUsers($entityClass, $quantity);
     }
 
-    public function defaultData(): array
+    /**
+     * @throws Exception
+     */
+    public function findByEmail(string $entityClass, string $email)
     {
-        $sex = $this->faker->boolean();
-        $bio = $this->faker->text();
+        $tableName = $this->tables->getTableName($entityClass);
 
-        $name = $this->faker->firstName($sex ? 'male' : 'female') . ' ' . $this->faker->lastName($sex ? 'male' : 'female');
-        $domain = uniqid() . $this->faker->word() . '.com';
-        $email = str_replace(' ', '_', $name) . '@' . $domain;
-        return [
-            'email' => $email,
-            'name' => $name,
-            'age' => random_int(10, 60),
-            'height' => random_int(160, 200),
-            'sex' => $sex,
-            'bio' => $bio,
-        ];
+        $sql = "select * from $tableName where email = '$email'";
+        return $this->entityManager->getConnection()->executeStatement($sql);
+        return $this->entityManager->getConnection()->executeQuery($sql)->fetchAllAssociative();
     }
 
-    public function create($type)
+    /**
+     * @throws Exception
+     */
+    public function findAll(string $entityClass)
     {
-        return $this->createWData($type, $this->defaultData());
-    }
+        $tableName = $this->tables->getTableName($entityClass);
 
-    public function createWData($type, $dd)
-    {
-        $user = new $type();
-        $user->setEmail($dd['email'])
-            ->setName($dd['name'])
-            ->setAge($dd['age'])
-            ->setHeight($dd['height'])
-            ->setSex($dd['sex'])
-            ->setBio($dd['bio'])
-            ->setAttributes($dd);
-        return $user;
+        $sql = "select * from $tableName";
+        return $this->entityManager->getConnection()->executeStatement($sql);
+        return $this->entityManager->getConnection()->executeQuery($sql)->fetchAllAssociative();
     }
 }
