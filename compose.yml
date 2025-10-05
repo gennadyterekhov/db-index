@@ -38,7 +38,8 @@ services:
             - ./:/var/www/app
         environment:
             CORS_ALLOW_ORIGIN: '*'
-
+        labels:
+            - "logging=promtail"  # This label tells Promtail to scrape this container
     back-nginx:
         container_name: back-nginx
         image: mirror.gcr.io/nginx:1.27-alpine
@@ -51,7 +52,47 @@ services:
         ports:
             - "81:80"
 
+    loki:
+        image: grafana/loki:2.9.0
+        container_name: loki
+        ports:
+            - "3100:3100"
+        command: -config.file=/etc/loki/local-config.yaml
+        volumes:
+            - ./loki.yaml:/etc/loki/local-config.yaml
+            - loki-data:/loki
+
+    # Promtail - log collector
+    promtail:
+        image: grafana/promtail:2.9.0
+        container_name: promtail
+        volumes:
+            - ./promtail.yaml:/etc/promtail/config.yaml
+            - ./app-logs:/var/log/my-app:ro  # Read-only access to app logs
+            - /var/lib/docker/containers:/var/lib/docker/containers:ro
+            - /var/run/docker.sock:/var/run/docker.sock
+        command: -config.file=/etc/promtail/config.yaml
+        depends_on:
+            - loki
+
+    # Grafana - visualization
+    grafana:
+        image: grafana/grafana:10.2.0
+        container_name: grafana
+        ports:
+            - "3000:3000"
+        environment:
+            - GF_SECURITY_ADMIN_PASSWORD=admin
+        volumes:
+            - grafana-data:/var/lib/grafana
+            - ./datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+        depends_on:
+            - loki
+
+
 
 volumes:
+    loki-data:
+    grafana-data:
     db_index_postgres_data:
     db_index_postgres_test_data:
