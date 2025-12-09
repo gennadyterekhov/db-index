@@ -18,3 +18,7 @@ analysis will be available on localhost:81
 - create an entity class for it with a repository, make sure to use base classes to get rid of boilerplate  
 - all available methods will be run automatically
 - visit localhost:81 to see the results
+
+# logs
+grafana is launched on localhost:3000  
+default creds are admin:admin  
