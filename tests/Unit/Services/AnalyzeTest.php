@@ -6,6 +6,7 @@ namespace App\Tests\Unit\Services;
 
 use App\Dto\QueryAnalysisResult;
 use App\Dto\TableAnalysisResult;
+use App\Entity\Statistic;
 use App\Entity\User;
 use App\Entity\UserEmailBTree;
 use App\Entity\UserIndexEveryCol;
@@ -35,5 +36,23 @@ final class AnalyzeTest extends CustomKernelTestCase
         self::assertIsArray($res[User::class]->queries);
         self::assertNotEmpty($res[User::class]->queries);
         self::assertInstanceOf(QueryAnalysisResult::class, $res[User::class]->queries[0]);
+    }
+
+    public function testCanSaveStatistic()
+    {
+        $res = $this->service->getAnalysisAndData();
+        self::assertIsArray($res);
+        self::assertArrayHasKey(User::class, $res);
+        self::assertArrayHasKey(UserEmailBTree::class, $res);
+        self::assertArrayHasKey(UserIndexEveryCol::class, $res);
+
+        self::assertInstanceOf(TableAnalysisResult::class, $res[User::class]);
+
+        self::assertIsArray($res[User::class]->queries);
+        self::assertNotEmpty($res[User::class]->queries);
+        self::assertInstanceOf(QueryAnalysisResult::class, $res[User::class]->queries[0]);
+
+        $stats = $this->entityManager->getRepository(Statistic::class)->findAll();
+        self::assertNotEmpty(count($stats));
     }
 }
